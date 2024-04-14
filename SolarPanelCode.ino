@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include<TimeLib.h>
 
 Servo myservo;  // create servo object to control a servo
 int pos = 0;    // variable to store the servo position
@@ -14,13 +15,15 @@ void loop() {
   unsigned long currentMillis = millis(); // Get the current time in milliseconds
   unsigned long totalSeconds = currentMillis / 1000; // Convert milliseconds to seconds
 
-  if(totalSeconds % 240==0){
-    delay(60000);
-  }
+  
 
   // Calculate the angle for the servo based on the time of the day
-  // We're assuming 240 seconds represent 24 hours
-  int angle = map(totalSeconds % 240, 0, 240, 0, 180); // Map the time to a servo angle
+  // We're assuming 240 seconds represent 24 hours, so it will work for only 120 seconds
+  int angle = map(totalSeconds % 120, 0, 120, 0, 180); // Map the time to a servo angle
+
+  if(totalSeconds%120==119){  // Rest 120 seconds it will tke rest and then return to its original position
+    delay(120000);
+  }
 
   // Move the servo to the calculated position
   myservo.write(angle);
